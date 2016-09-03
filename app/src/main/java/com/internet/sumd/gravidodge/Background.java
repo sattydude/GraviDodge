@@ -16,34 +16,35 @@ public class Background {
     private int x, y, dx;
 
     Bitmap back, middle, front;
+    Bitmap bmp;
     Canvas bitmap;
-    public Background(Bitmap res)
+    public Background(Bitmap res, int screenWidth, int screenHeight)
     {
 
         image = res;
-
-    }
-    public Background(int screenWidth, int screenHeight)
-    {
-
-
-
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap bmp = Bitmap.createBitmap(screenWidth, screenHeight, conf); // this creates a MUTABLE bitmap
+        bmp = Bitmap.createBitmap(screenWidth, screenHeight, conf); // this creates a MUTABLE bitmap
+
         bitmap = new Canvas(bmp);
+
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
 
-        int starCount = 200;
-       // int[] stars = new int[starCount];
+        int starCount = 4000;
+        // int[] stars = new int[starCount];
+
+       // while (true){   System.out.println(Math.random());   }
         for (int i = 0 ; i < starCount; ++i){
-            bitmap.drawPoint( (int)Math.floor(Math.random() % screenWidth) , (int)Math.floor(Math.random() % screenHeight), paint);
+            int xPixel = (int)Math.floor(Math.random() * screenWidth);
+            int yPixel = (int)Math.floor(Math.random() * screenHeight);
+            //  bitmap.drawPoint( (int)Math.floor(Math.random() % screenWidth) , (int)Math.floor(Math.random() % screenHeight), paint);
+            bmp.setPixel(xPixel, yPixel, Color.WHITE);
+
+            System.out.println("( " + xPixel + ", " + yPixel + " )");
         }
 
-
-
-
     }
+
     public void update()
     {
         x += dx;
@@ -56,11 +57,11 @@ public class Background {
     public void draw(Canvas canvas)
     {
 
-        canvas.paint(bitmap);
-        canvas.drawBitmap(image, x, y,null);
+        canvas.drawBitmap(bmp, 0, 0, null);
+       // canvas.drawBitmap(image, x, y,null);
         if(x<0)
         {
-            canvas.drawBitmap(image, x+GamePanel.WIDTH, y, null);
+            canvas.drawBitmap(bmp, x+GamePanel.WIDTH, y, null);
         }
     }
     public void setVector( int dx )
